@@ -26,11 +26,19 @@ async function tslConnect(host: string): Promise<TLSSocket> {
 }
 
 async function getExpireTime(host: string): Promise<number> {
-  const sock = await tslConnect(host);
-  const cert = sock.getPeerCertificate();
-  const to = new Date(cert.valid_to);
-  sock.end();
-  return to.getTime();
+  try {
+    const sock = await tslConnect(host);
+    const cert = sock.getPeerCertificate();
+    const to = new Date(cert.valid_to);
+    sock.end();
+    return to.getTime();
+  } catch (e: any) {
+    if (e.message === 'certificate has expired') {
+      return 0;
+    }
+    console.error(e)
+    throw e;
+  }
 }
 
 async function sendMailToMe(subject: string, content: string) {
