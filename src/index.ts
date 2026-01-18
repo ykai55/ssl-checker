@@ -132,6 +132,7 @@ function main() {
     checkAll().then();
     return;
   }
+  console.log('start checking per 10min...');
   CronJob.from({
     cronTime: '0 10 * * *',
     onTick: checkAll,
