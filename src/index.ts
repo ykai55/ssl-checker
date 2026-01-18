@@ -4,6 +4,9 @@ import 'moment-timezone';
 import tls, { TLSSocket } from 'node:tls'
 import nodemailer from 'nodemailer';
 
+moment.tz('Asia/Shanghai');
+moment.locale('zh-cn');
+
 async function tslConnect(host: string): Promise<TLSSocket> {
   let port = 443;
   if (host.indexOf(':') !== -1) {
@@ -98,9 +101,7 @@ function getConfig() {
 }
 
 async function checkAll() {
-  moment.tz('Asia/Shanghai');
-  moment.locale('zh-cn');
-
+  console.log('checking all hosts...');
   const content: [string, string][] = [];
   const now = Date.now();
   const items: [string, number][] = await Promise.all(
